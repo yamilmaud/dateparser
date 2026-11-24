@@ -225,6 +225,19 @@ class Locale:
                         )
                     )
                     skip_next_token = True
+                elif (
+                    word in dictionary
+                    and dictionary[word] == "day"
+                    and i > 0
+                    and original_tokens[i - 1].lower() in self.info.get("articles", ())
+                ):
+                    # A standalone "day"-unit noun (e.g. Italian "giorno") right
+                    # after an article is noise, not part of the date, e.g. "Il
+                    # giorno martedì 23 aprile 2019" / "Il giorno 23 aprile 2019".
+                    # Drop it the same way the article itself is already dropped
+                    # by the unknown-word fallback below. Dropping "giorno"
+                    # unconditionally would break "2 giorni fa", hence the guard.
+                    continue
                 elif word in dictionary and word not in dashes:
                     translated_chunk.append(dictionary[word])
                     original_chunk.append(original_tokens[i])

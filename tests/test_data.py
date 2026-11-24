@@ -25,6 +25,7 @@ VALID_KEYS = [
     "date_order",
     "skip",
     "pertain",
+    "articles",
     "simplifications",
     "no_word_spacing",
     "ago",
@@ -339,6 +340,11 @@ class TestLocaleInfo(BaseTestCase):
     def test_pertain_tokens(self, locale):
         self.given_locale_info(locale)
         self.then_skip_pertain_tokens_are_valid("pertain")
+
+    @parameterized.expand(all_locale_params)
+    def test_article_tokens(self, locale):
+        self.given_locale_info(locale)
+        self.then_skip_pertain_tokens_are_valid("articles")
 
     @parameterized.expand(all_locale_params)
     def test_simplifications(self, locale):
