@@ -555,6 +555,36 @@ class TestTranslateSearch(BaseTestCase):
                 ],
                 settings={"RELATIVE_BASE": datetime.datetime(2000, 1, 1)},
             ),
+            # Italian: regression tests for
+            # https://github.com/scrapinghub/dateparser/issues/521 — a weekday
+            # or a plain date preceded by "Il giorno" ("the day") used to be
+            # split into unrelated single-word fragments instead of one date.
+            param(
+                "it",
+                "Il giorno martedì 23 aprile 2019",
+                [("martedì 23 aprile 2019", datetime.datetime(2019, 4, 23, 0, 0))],
+                settings={
+                    "DATE_ORDER": "DMY",
+                    "RELATIVE_BASE": datetime.datetime(2019, 5, 2),
+                },
+            ),
+            param(
+                "it",
+                "Il giorno 23 aprile 2019",
+                [("23 aprile 2019", datetime.datetime(2019, 4, 23, 0, 0))],
+                settings={
+                    "DATE_ORDER": "DMY",
+                    "RELATIVE_BASE": datetime.datetime(2019, 5, 2),
+                },
+            ),
+            # "giorno"/"giorni" must still translate normally when it isn't
+            # preceded by an article, e.g. in relative-date phrases.
+            param(
+                "it",
+                "2 giorni fa",
+                [("2 giorni fa", datetime.datetime(2019, 4, 30, 0, 0))],
+                settings={"RELATIVE_BASE": datetime.datetime(2019, 5, 2)},
+            ),
         ]
     )
     @apply_settings

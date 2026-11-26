@@ -267,6 +267,18 @@ info = {
         "|",
         "，"
     ],
+    "articles": [
+        "il",
+        "lo",
+        "la",
+        "i",
+        "gli",
+        "le",
+        "l'",
+        "un",
+        "uno",
+        "una"
+    ],
     "sentence_splitter_group": 1,
     "ago": [
         "fa"
